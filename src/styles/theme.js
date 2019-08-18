@@ -18,12 +18,13 @@ export const colorBlack = '#000000';
 export const colorRed = '#A52A2A';
 export const colorBlue = '#4082BB';
 export const colorBlueAlpha = 'rgba(0, 161, 255, .5)';
+export const colorMlYellow = '#FFE600';
 
 // gray scale
 export const colorGray01 = '#222222';
 export const colorGray02 = '#333333';
 export const colorGray03 = '#666666';
-export const colorGray04 = '#888888';
+export const colorGray04 = '#999999';
 export const colorGray05 = '#acaeb0';
 export const colorGray06 = '#c0c2c3';
 export const colorGray07 = '#d5d6d7';

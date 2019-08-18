@@ -30,10 +30,9 @@ class ListProducts extends Component {
 
   renderList() {
     const { products } = this.props;
-    console.log(products);
     if (products !== undefined) {
-      const list = products.map(item => {
-        return ( <ListItem key={item.id}> {item.name} </ListItem>);
+      const list = products.results.map(item => {
+        return ( <ListItem key={item.id}> {item.title} </ListItem>);
       });
 
       return list;
@@ -52,7 +51,7 @@ class ListProducts extends Component {
 }
 
 const mapStateToProps = state => ({
-    products: state.products.data.results,
+    products: state.products.data.products,
 });
 const mapDispatchToProps = dispatch => bindActionCreators(
   {
