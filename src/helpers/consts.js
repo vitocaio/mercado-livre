@@ -1,0 +1,1 @@
+export const BASEURL_MLAPI = "https://api.mercadolibre.com/";
