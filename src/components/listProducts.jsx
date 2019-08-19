@@ -2,60 +2,150 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+import Currency from 'react-currency-formatter';
 
-import { getProducts } from '../actions/productsList';
+import If from '../helpers/if';
+import { getProductsList } from '../actions/products';
+import shipping from '../static/ic_shipping.png';
+import LoaderSimple from './loader/loaderSimple';
 
 //Styles
-const Content = styled.div`
-`;
-
 const StyledList = styled.ul`
 list-style: none;
-padding: 0px;
+padding: 10px;
+background: ${props => props.theme.colorWhite};
+border-radius: 3px;
 `;
 
-const ListItem = styled.li`
-padding: 30px;
-border: solid 1px #e2e2e2;
-border-radius: 5px;
-margin: 10px 0;
-box-shadow: 0px 5px 23px -9px rgba(148,148,148,0.64);
+const StyledListItem = styled.li`
+padding: 10px 0px;
+border-bottom: solid 1px ${props => props.theme.colorGray10};
+&&:last-child {
+  border-bottom: none;
+}
+`;
+
+const StyledListItemContent = styled.div`
+min-height: 180px;
+h4 {
+  margin-top: 30px;
+}
+p {
+  margin-top: 20px;
+}
+
+span {
+  font-size: 12px;
+  color: ${props => props.theme.colorGray08};
+  position: absolute;
+  margin-top: 50px;
+}
+`;
+
+const Thumbnail = styled.img`
+  width: 180px;
+  height: 180px;
+  background: ${props => props.theme.colorGray08};
+  border-radius: 3px;
+`;
+
+const Shipping = styled.img`
+margin: 5px 15px;
+position: absolute;
 `;
 
 class ListProducts extends Component {
+  state = {
+    loaderLocal: true,
+  }
+
   componentDidMount() {
-    const { getProducts } = this.props;
-    getProducts();
+    const { getProductsList } = this.props;
+    getProductsList().then(() => {
+      this.setState({ loaderLocal: false });
+    });
+  }
+
+  componentDidUpdate(prevState) {
+    const { search } = this.props;
+    if (search !== prevState.search) {
+      this.getProductsSearch(search);
+    }
+  }
+
+  getProductsSearch(searchValue) {
+    const { getProductsList } = this.props;
+
+    this.setState({ loaderLocal: true });
+    getProductsList(searchValue).then(() => {
+      this.setState({
+        loaderLocal: false,
+      });
+    });
+  }
+
+  renderListItem(item) {
+    return (
+      <StyledListItemContent className="row">
+        <div className="col-lg-2">
+          <Thumbnail src={item.thumbnail} alt="" />
+        </div>
+        <div className="col-lg-8">
+          <h4>
+            <Currency
+              quantity={item.price}
+              currency="USD"
+            />
+            <If test={item.shipping.free_shipping}>
+              <Shipping alt="Shipping ML" src={shipping} />
+            </If>
+          </h4>
+          <p>
+            {item.title}
+          </p>
+        </div>
+        <div className="col-lg-2">
+          <span>
+            {item.address.state_name}
+          </span>
+        </div>
+      </StyledListItemContent>
+    );
   }
 
   renderList() {
     const { products } = this.props;
     if (products !== undefined) {
-      const list = products.results.map(item => {
-        return ( <ListItem key={item.id}> {item.title} </ListItem>);
-      });
-
-      return list;
+      if(products.results !== undefined) {
+        const list = products.results.map(item => {
+          return ( <StyledListItem key={item.id}> {this.renderListItem(item)} </StyledListItem>);
+        });
+        return list;
+      }
     }
   }
 
   render() {
+    const { loaderLocal } = this.state;
+
     return (
-      <Content>
+      <div>
         <StyledList>
-          {this.renderList()}
+          <LoaderSimple show={loaderLocal}>
+            {this.renderList()}
+          </LoaderSimple>
         </StyledList>
-      </Content>
+      </div>
     )
   }
 }
 
 const mapStateToProps = state => ({
-    products: state.products.data.products,
+  products: state.products.list,
 });
 const mapDispatchToProps = dispatch => bindActionCreators(
   {
-    getProducts,
+    getProductsList,
   },
   dispatch,
 );
