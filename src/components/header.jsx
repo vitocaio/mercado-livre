@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { withRouter } from "react-router-dom";
 
 import logo from '../static/Logo_ML.png';
 
@@ -49,13 +50,39 @@ clear: both;
 `;
 
 class Header extends Component {
-  state = {
-    search: '',
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      search: '',
+    };
 
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+  componentDidMount() {
+      const search = new URLSearchParams(this.props.location.search);
+      const searchValue = search.get("search");
+
+      this.setState({ search: searchValue });
+  }
+  
   handleChange(e) {
     const { value } = e.target;
     this.setState({ search: value });
+  }
+
+  handleKeyDown(e) {
+    const { search } = this.state;
+    const { onSearch } = this.props;
+    
+    if (e.key === 'Enter') {
+      onSearch(search);
+      this.props.history.push(`/items?search=${search}`);
+    }
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
   }
 
   render() {
@@ -69,18 +96,28 @@ class Header extends Component {
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
               <Icon icon="bars" />
             </button>
-            <Link className="navbar-brand" href="./list">
+            <Link className="navbar-brand" href="/">
               <img width="60px" className="img-logo-ml-sm-white" alt="Logo ML" src={logo} />
             </Link>
             <div className="collapse navbar-collapse" id="navbarCollapse">
               <ul className="navbar-nav mr-auto">
                 <li> 
-                  <form className="form-inline">
+                  <form className="form-inline" onSubmit={this.handleSubmit}>
                     <InputSearch>
-                      <button className="btn" type="button" onClick={() => { onSearch(search) }}>
+                      <button className="btn" type="button" onClick={() => { 
+                        onSearch(search) 
+                        this.props.history.push(`/items?search=${search}`);
+                      }}>
                         <Icon icon="search"/>
                       </button>
-                      <input className="form-control" type="search" placeholder="Search" aria-label="Search" value={search} onChange={(e) => {this.handleChange(e)}} />
+                      <input 
+                        className="form-control"
+                        type="search" 
+                        placeholder="Search" 
+                        aria-label="Search" 
+                        value={search || ''} 
+                        onChange={(e) => { this.handleChange(e) }} 
+                        onKeyDown={(e) => { this.handleKeyDown(e) }} />
                     </InputSearch>
                     <ClearBoth></ClearBoth>
                   </form>
@@ -94,4 +131,4 @@ class Header extends Component {
   };
 }
 
-export default Header;
+export default withRouter(Header);

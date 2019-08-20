@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import Currency from 'react-currency-formatter';
+import { withRouter } from "react-router-dom";
 
 import If from '../helpers/if';
 import { getProductsList } from '../actions/products';
@@ -23,6 +24,7 @@ border-bottom: solid 1px ${props => props.theme.colorGray10};
 &&:last-child {
   border-bottom: none;
 }
+cursor: pointer;
 `;
 
 const StyledListItemContent = styled.div`
@@ -53,6 +55,11 @@ const Shipping = styled.img`
 margin: 5px 15px;
 position: absolute;
 `;
+const NotFound = styled.h4`
+text-align: center;
+margin-top: 30px;
+color: ${props => props.theme.colorGray08};
+`;
 
 class ListProducts extends Component {
   state = {
@@ -61,7 +68,11 @@ class ListProducts extends Component {
 
   componentDidMount() {
     const { getProductsList } = this.props;
-    getProductsList().then(() => {
+
+    const search = new URLSearchParams(this.props.location.search);
+    const searchValue = search.get("search");
+
+    getProductsList(searchValue).then(() => {
       this.setState({ loaderLocal: false });
     });
   }
@@ -82,6 +93,10 @@ class ListProducts extends Component {
         loaderLocal: false,
       });
     });
+  }
+
+  openDetails(id) {
+    this.props.history.push(`/items/${id}`);
   }
 
   renderListItem(item) {
@@ -115,10 +130,17 @@ class ListProducts extends Component {
 
   renderList() {
     const { products } = this.props;
-    if (products !== undefined) {
-      if(products.results !== undefined) {
+    if (products) {
+      if(products.results) {
+        if(products.results.length === 0) {
+          return (
+            <NotFound>
+              Nenhum Produto encontrado : /
+            </NotFound>
+          )
+        }
         const list = products.results.map(item => {
-          return ( <StyledListItem key={item.id}> {this.renderListItem(item)} </StyledListItem>);
+          return ( <StyledListItem onClick={() => { this.openDetails(item.id) }} key={item.id}> {this.renderListItem(item)} </StyledListItem>);
         });
         return list;
       }
@@ -149,4 +171,4 @@ const mapDispatchToProps = dispatch => bindActionCreators(
   },
   dispatch,
 );
-export default connect(mapStateToProps, mapDispatchToProps)(ListProducts);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ListProducts));

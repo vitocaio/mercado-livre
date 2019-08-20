@@ -22,8 +22,16 @@ p {
   font-size: 1.125rem;
 }
 
+span {
+  font-size: 0.875rem
+}
+
 h4 {
   font-size: 1.5rem;
+}
+
+h2 {
+  font-size: 2.875rem;
 }
 
 .btn-default {
@@ -54,4 +62,9 @@ h4 {
 
 div[x-placement^="bottom"] polygon {
   fill: #000;
+}
+
+.row {
+  margin-right: 0px;
+  margin-left: 0px;
 }
