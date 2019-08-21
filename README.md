@@ -47,11 +47,11 @@ Also, be sure to have `git` available in your PATH, `npm` might need it.
 
 ## Start & watch
 
-    $ npm start or yarn start
+    $ npm start
 
 ## Run the Tests
 
-    $ npm test or yarn test
+    $ npm test
 
 ## Simple build for production
 
