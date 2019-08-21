@@ -69,12 +69,14 @@ class ListProducts extends Component {
   componentDidMount() {
     const { getProductsList } = this.props;
 
-    const search = new URLSearchParams(this.props.location.search);
-    const searchValue = search.get("search");
+    if(this.props.location) {
+      const search = new URLSearchParams(this.props.location.search);
+      const searchValue = search.get("search");
 
-    getProductsList(searchValue).then(() => {
-      this.setState({ loaderLocal: false });
-    });
+      getProductsList(searchValue).then(() => {
+        this.setState({ loaderLocal: false });
+      });
+    }
   }
 
   componentDidUpdate(prevState) {
@@ -171,4 +173,6 @@ const mapDispatchToProps = dispatch => bindActionCreators(
   },
   dispatch,
 );
+
+export const ListProductsTest = ListProducts;
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ListProducts));

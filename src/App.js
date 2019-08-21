@@ -4,12 +4,12 @@ import { createBrowserHistory } from 'history';
 
 import Header from './components/header';
 import ProductsList from './components/listProducts';
-import ProductsDetails from './components/productDetail';
+import ProductsDetails from './components/detailProduct';
 import styled from 'styled-components';
 
 const Content = styled.div`
 width: 80%;
-margin: 20px auto;
+margin: 50px auto;
 `;
 
 class App extends Component {
@@ -49,8 +49,8 @@ class App extends Component {
         <Router history={createBrowserHistory}>
         <Header onSearch={valor => this.handleSearch(valor)}/>
           <Content>
-              <Route exact path="/items" component={this.renderList}/>
-              <Route path="/items/:id" component={this.renderDetail}/>
+            <Route exact path="/items" component={this.renderList}/>
+            <Route path="/items/:id" component={this.renderDetail}/>
           </Content>
         </Router>
       </div>

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBars, faSearch } from '@fortawesome/free-solid-svg-icons'
+
 import { withRouter } from "react-router-dom";
 
 import logo from '../static/Logo_ML.png';
@@ -94,7 +96,7 @@ class Header extends Component {
         <Container>
           <Nav className="navbar navbar-expand-lg">
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-              <Icon icon="bars" />
+              <Icon icon={faBars} />
             </button>
             <Link className="navbar-brand" href="/">
               <img width="60px" className="img-logo-ml-sm-white" alt="Logo ML" src={logo} />
@@ -108,7 +110,7 @@ class Header extends Component {
                         onSearch(search) 
                         this.props.history.push(`/items?search=${search}`);
                       }}>
-                        <Icon icon="search"/>
+                        <Icon icon={faSearch}/>
                       </button>
                       <input 
                         className="form-control"
@@ -130,5 +132,4 @@ class Header extends Component {
     );
   };
 }
-
 export default withRouter(Header);
