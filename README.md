@@ -1,8 +1,4 @@
-# PROJECT ML APP
-
-## The Challenge
-
-
+# ML APP
 
 ### Node
 
@@ -53,6 +49,10 @@ Also, be sure to have `git` available in your PATH, `npm` might need it.
 
     $ npm start or yarn start
 
+## Run the Tests
+
+    $ npm test or yarn test
+
 ## Simple build for production
 
     $ npm run build
@@ -61,20 +61,23 @@ Also, be sure to have `git` available in your PATH, `npm` might need it.
 
 ### HTML
 
-- [Jade](http://jade-lang.com/) for some templating.
+    Mobile First
+    Usabilidad
+    SEO
+    Performance
+    Escalabilidad
 
 ### JavaScript
 
-- [JSHint](http://www.jshint.com/docs/) is used to prevent JavaScript error.
-- [JSCS](https://npmjs.org/package/jscs) is used to check coding conventions.
-- [Browserify](http://browserify.org/) to handle allow us to write our client-side scripts with [es6 syntax](http://es6.github.io/) thanks to [es6ify](https://github.com/thlorenz/es6ify).
+- [Eslint] is used to prevent JavaScript error.
+- [Browserify] to handle allow us to write our client-side scripts with [es6 syntax](http://es6.github.io/) thanks to [es6ify](https://github.com/thlorenz/es6ify).
 - [React](http://facebook.github.io/react) is used for UI.
+- [Redux](https://redux.js.org) is used for control State of app.
+- [Jest](https://jestjs.io) is used for test.
 
 ### CSS
 
-- [cssnext](http://cssnext.putaindecode.io) is used to write futureproof CSS for CSS vendor prefix under the hood).
-
-_Autoprefixer_ is included and use [caniuse.com](http://caniuse.com/) database to avoid outdated prefixes. _You can forget CSS prefixes NOW._
+- [StyledComponent](https://www.styled-components.com/) Used for easy export and easy import of components).
 
 ### Static server with Livereload
 
