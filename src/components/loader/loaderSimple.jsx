@@ -5,7 +5,7 @@ import LoaderSVG from '../../static/loader.svg';
 
 const LoaderContainer = styled.div`
 position:relative;
-min-height: ${props => (props.limit === 'v' && '0') || '250px'};
+min-height: ${(props) => (props.limit === 'v' && '0') || '250px'};
 `;
 const ImgLoader = styled.img`
 position: absolute;
@@ -13,22 +13,22 @@ width: 100%;
 display: flex;
 justify-content: center;
 margin: 50px 0;
-opacity: ${props => (props.show ? 1 : 0)};
-visibility: ${props => (props.show ? 'visible' : 'hidden')};
+opacity: ${(props) => (props.show ? 1 : 0)};
+visibility: ${(props) => (props.show ? 'visible' : 'hidden')};
 transition: opacity .4s ease, visibility .0s ease .4s;
-${props => props.limit === 'v' && `
+${(props) => props.limit === 'v' && `
   height: 100%;
   margin: 0;
 `}
-${props => props.show && `
+${(props) => props.show && `
   transition opacity .4s ease .4s, visibility .0s ease;
 `}
 `;
 const Content = styled.div`
-opacity: ${props => (props.hide ? 0 : 1)};
-visibility: ${props => (props.hide ? 'hidden' : 'visible')};
+opacity: ${(props) => (props.hide ? 0 : 1)};
+visibility: ${(props) => (props.hide ? 'hidden' : 'visible')};
 transition: opacity .8s ease .4s;
-${props => props.hide && `
+${(props) => props.hide && `
   transition: opacity .4s ease 0s;
 `}
 `;

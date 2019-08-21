@@ -3,24 +3,24 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import Currency from 'react-currency-formatter';
-import { withRouter } from "react-router-dom";
+import { withRouter } from 'react-router-dom';
 
 import If from '../helpers/if';
 import { getProductsList } from '../actions/products';
 import shipping from '../static/ic_shipping.png';
 import LoaderSimple from './loader/loaderSimple';
 
-//Styles
+// Styles
 const StyledList = styled.ul`
 list-style: none;
 padding: 10px;
-background: ${props => props.theme.colorWhite};
+background: ${(props) => props.theme.colorWhite};
 border-radius: 3px;
 `;
 
 const StyledListItem = styled.li`
 padding: 10px 0px;
-border-bottom: solid 1px ${props => props.theme.colorGray10};
+border-bottom: solid 1px ${(props) => props.theme.colorGray10};
 &&:last-child {
   border-bottom: none;
 }
@@ -38,7 +38,7 @@ p {
 
 span {
   font-size: 12px;
-  color: ${props => props.theme.colorGray08};
+  color: ${(props) => props.theme.colorGray08};
   position: absolute;
   margin-top: 50px;
 }
@@ -47,7 +47,7 @@ span {
 const Thumbnail = styled.img`
   width: 180px;
   height: 180px;
-  background: ${props => props.theme.colorGray08};
+  background: ${(props) => props.theme.colorGray08};
   border-radius: 3px;
 `;
 
@@ -58,20 +58,23 @@ position: absolute;
 const NotFound = styled.h4`
 text-align: center;
 margin-top: 30px;
-color: ${props => props.theme.colorGray08};
+color: ${(props) => props.theme.colorGray08};
 `;
 
 class ListProducts extends Component {
-  state = {
-    loaderLocal: true,
+  constructor(props) {
+    super(props);
+    this.state = {
+      loaderLocal: true,
+    };
   }
 
   componentDidMount() {
-    const { getProductsList } = this.props;
+    const { getProductsList, location } = this.props;
 
-    if(this.props.location) {
-      const search = new URLSearchParams(this.props.location.search);
-      const searchValue = search.get("search");
+    if (location) {
+      const search = new URLSearchParams(location.search);
+      const searchValue = search.get('search');
 
       getProductsList(searchValue).then(() => {
         this.setState({ loaderLocal: false });
@@ -98,9 +101,11 @@ class ListProducts extends Component {
   }
 
   openDetails(id) {
-    this.props.history.push(`/items/${id}`);
+    const { history } = this.props;
+    history.push(`/items/${id}`);
   }
 
+  // eslint-disable-next-line class-methods-use-this
   renderListItem(item) {
     return (
       <StyledListItemContent className="row">
@@ -133,20 +138,29 @@ class ListProducts extends Component {
   renderList() {
     const { products } = this.props;
     if (products) {
-      if(products.results) {
-        if(products.results.length === 0) {
+      if (products.results) {
+        if (products.results.length === 0) {
           return (
             <NotFound>
               Nenhum Produto encontrado : /
             </NotFound>
-          )
+          );
         }
-        const list = products.results.map(item => {
-          return ( <StyledListItem onClick={() => { this.openDetails(item.id) }} key={item.id}> {this.renderListItem(item)} </StyledListItem>);
-        });
+        const list = products.results.map((item) => (
+          <StyledListItem
+            onClick={() => { this.openDetails(item.id); }}
+            key={item.id}
+          >
+            {
+              this.renderListItem(item)
+            }
+          </StyledListItem>
+        ));
         return list;
       }
     }
+
+    return false;
   }
 
   render() {
@@ -160,14 +174,14 @@ class ListProducts extends Component {
           </LoaderSimple>
         </StyledList>
       </div>
-    )
+    );
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   products: state.products.list,
 });
-const mapDispatchToProps = dispatch => bindActionCreators(
+const mapDispatchToProps = (dispatch) => bindActionCreators(
   {
     getProductsList,
   },

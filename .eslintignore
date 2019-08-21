@@ -1,0 +1,5 @@
+stories/
+src/test
+src/mocker
+src/index.js
+src/serviceWorker.js

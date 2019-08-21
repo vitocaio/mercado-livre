@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars, faSearch } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars, faSearch } from '@fortawesome/free-solid-svg-icons';
 
-import { withRouter } from "react-router-dom";
+import { withRouter } from 'react-router-dom';
 
 import logo from '../static/Logo_ML.png';
 
@@ -11,7 +11,7 @@ const Icon = styled(FontAwesomeIcon)`
 `;
 const Container = styled.div`
 width: 100%;
-background: ${props => props.theme.colorMlYellow};
+background: ${(props) => props.theme.colorMlYellow};
 ul,li {
   width: 100%;
 }
@@ -22,9 +22,9 @@ margin: 0 auto;
 `;
 const Link = styled.a`
 text-decoration: none;
-color: ${props => props.theme.colorGray02};
+color: ${(props) => props.theme.colorGray02};
 &:hover {
-  color: ${props => props.theme.colorWhite};
+  color: ${(props) => props.theme.colorWhite};
 }
 `;
 const InputSearch = styled.div`
@@ -61,13 +61,15 @@ class Header extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  componentDidMount() {
-      const search = new URLSearchParams(this.props.location.search);
-      const searchValue = search.get("search");
 
+  componentDidMount() {
+    const { location } = new URLSearchParams(this.props);
+    if (location) {
+      const searchValue = location.search.get('search');
       this.setState({ search: searchValue });
+    }
   }
-  
+
   handleChange(e) {
     const { value } = e.target;
     this.setState({ search: value });
@@ -76,13 +78,14 @@ class Header extends Component {
   handleKeyDown(e) {
     const { search } = this.state;
     const { onSearch } = this.props;
-    
     if (e.key === 'Enter') {
       onSearch(search);
-      this.props.history.push(`/items?search=${search}`);
+      const { history } = this.props;
+      history.push(`/items?search=${search}`);
     }
   }
 
+  // eslint-disable-next-line class-methods-use-this
   handleSubmit(event) {
     event.preventDefault();
   }
@@ -103,25 +106,31 @@ class Header extends Component {
             </Link>
             <div className="collapse navbar-collapse" id="navbarCollapse">
               <ul className="navbar-nav mr-auto">
-                <li> 
+                <li>
                   <form className="form-inline" onSubmit={this.handleSubmit}>
                     <InputSearch>
-                      <button className="btn" type="button" onClick={() => { 
-                        onSearch(search) 
-                        this.props.history.push(`/items?search=${search}`);
-                      }}>
-                        <Icon icon={faSearch}/>
+                      <button
+                        className="btn"
+                        type="button"
+                        onClick={() => {
+                          const { history } = this.props;
+                          onSearch(search);
+                          history.push(`/items?search=${search}`);
+                        }}
+                      >
+                        <Icon icon={faSearch} />
                       </button>
-                      <input 
+                      <input
                         className="form-control"
-                        type="search" 
-                        placeholder="Search" 
-                        aria-label="Search" 
-                        value={search || ''} 
-                        onChange={(e) => { this.handleChange(e) }} 
-                        onKeyDown={(e) => { this.handleKeyDown(e) }} />
+                        type="search"
+                        placeholder="Search"
+                        aria-label="Search"
+                        value={search || ''}
+                        onChange={(e) => { this.handleChange(e); }}
+                        onKeyDown={(e) => { this.handleKeyDown(e); }}
+                      />
                     </InputSearch>
-                    <ClearBoth></ClearBoth>
+                    <ClearBoth />
                   </form>
                 </li>
               </ul>
@@ -130,6 +139,6 @@ class Header extends Component {
         </Container>
       </header>
     );
-  };
+  }
 }
 export default withRouter(Header);

@@ -9,7 +9,7 @@ export default (state = INITIAL_STATE, action = {}) => {
     case GET_PRODUCT_DETALS:
       return { ...state, detail: action.payload };
     case GET_PRODUCT_DESCRIPTION:
-        return { ...state, detailDescription: action.payload };
+      return { ...state, detailDescription: action.payload };
     default:
       return state;
   }
